@@ -32,7 +32,6 @@ class TransactionController extends Controller
 
         $product = $productResponse->json();
 
-        // Cek apakah stok cukup
         if ($product['stock'] < $item['quantity']) {
             return response()->json(['error' => "Stok produk {$product['name']} tidak cukup"], 400);
         }
@@ -52,7 +51,7 @@ class TransactionController extends Controller
         return response()->json(['error' => 'Uang tidak cukup'], 400);
     }
 
-    // Simpan transaksi
+    
     $transaction = Transaction::create([
         'customer_name' => $validated['customer_name'],
         'customer_phone' => $validated['customer_phone'],
@@ -61,7 +60,7 @@ class TransactionController extends Controller
         'change' => $validated['amount_paid'] - $total,
     ]);
 
-    // Simpan items dan kurangi stok
+
     foreach ($itemsData as $itemData) {
         $itemData['transaction_id'] = $transaction->id;
         TransactionItem::create($itemData);
