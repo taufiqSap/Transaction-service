@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Http;
 
 class TransactionController extends Controller
 {
+      public function index()
+    {
+    return Transaction::with('items')->orderBy('id', 'asc')->get(); 
+    
+    }
+
     public function store(Request $request)
 {
     $validated = $request->validate([
@@ -77,14 +83,6 @@ class TransactionController extends Controller
         'data' => $transaction->load('items')
     ]);
 }
-
-
-    public function index()
-    {
-    return Transaction::with('items')->orderBy('id', 'asc')->get(); 
-
-    }
-
     public function show($id)
     {
         return Transaction::with('items')->findOrFail($id);
